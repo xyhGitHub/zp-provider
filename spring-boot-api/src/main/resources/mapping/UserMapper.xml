@@ -1,56 +1,374 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.loan.dao.mapper.UserMapper">
-	<resultMap id="User_resultMap" type="com.loan.entity.User">
-		<result column="id" property="id"/>
-		<result column="username" property="username" />
-		<result column="work_no" property="workNo" />
-		<result column="salt" property="salt" />
-		<result column="password" property="password" />
-		<result column="age" property="age" jdbcType="INTEGER"/>
-		<result column="state" property="state" />
-		<result column="org_id" property="orgId"/>
-		<result column="pic" property="pic"/>
-		<result column="phone" property="phone"/>
-		<result column="address" property="address"/>
-		<result column="email" property="email"/>
-		<result column="percent" property="percent"/>
-	</resultMap>
-	<sql id="baseColumn">id,username,work_no,salt,password,age,state,org_id,pic,phone,address,email,percent</sql>
-	<!--增加-->
-	<insert id="save" parameterType="com.loan.entity.User" keyColumn="id" useGeneratedKeys="true" keyProperty="id">
-	insert into sys_user(id,username,work_no,salt,password,age,state,org_id,pic,phone,address,email,percent) values (#{id},#{username},#{workNo},#{salt},#{password},#{age},#{state},#{orgId},#{pic},#{phone},#{address},#{email},#{percent})
-	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id"> 
-        SELECT LAST_INSERT_ID() 
-    </selectKey>
-	</insert>
-	<!-- 查询记录 -->
-	<select id="find" parameterType="com.loan.pojo.UserParams" resultMap="User_resultMap">
-	select <include refid="baseColumn"/> from sys_user
-	<include refid="searchSql"/>
-	<if test="orderBy!=null">${orderBy}</if>
-	<if test="start!=null and rows!=null">
-             limit #{start},#{rows}
-       	</if>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.four.dao.IUserMapper" >
+  <resultMap id="BaseResultMap" type="com.four.model.User" >
+    <id column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="usersex" property="usersex" jdbcType="VARCHAR" />
+    <result column="loginname" property="loginname" jdbcType="VARCHAR" />
+    <result column="pwd" property="pwd" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="INTEGER" />
+    <result column="typeid" property="typeid" jdbcType="INTEGER" />
+    <result column="typename" property="typename" jdbcType="VARCHAR" />
+    <result column="deptname" property="deptname" jdbcType="VARCHAR" />
+    <result column="companyid" property="companyid" jdbcType="INTEGER" />
+    <result column="companyname" property="companyname" jdbcType="VARCHAR" />
+    <result column="userphone" property="userphone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+  </resultMap>
+    <sql id="Base_Column_List" >
+   tu.userid, tu.username, tu.usersex,tu.loginname,tu.pwd,tu.deptid,tu.typeid,tu.companyid,tu.userphone,tu.email
+  </sql>
+  
+  <resultMap id="UserBaseResultMap" type="com.four.model.User">
+        <id column="userid" property="userid" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="usersex" property="usersex" jdbcType="VARCHAR"/>
+        <result column="loginname" property="loginname" jdbcType="VARCHAR"/>
+        <result column="pwd" property="pwd" jdbcType="VARCHAR"/>
+        <collection property="list" ofType="com.four.model.Role">
+        	<result column="roleId" property="roleId"  jdbcType="INTEGER"/>
+        	<result column="roleName" property="roleName"  jdbcType="VARCHAR"/>
+        </collection>
+        <collection property="listTree" ofType="com.four.model.Tree">
+        	<result column="pid" property="pid"  jdbcType="VARCHAR"/>
+        	<result column="text" property="text"  jdbcType="VARCHAR"/>
+        	<result column="url" property="url"  jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    
+  <!-- 查询薪资超过5000的人 --> 	
+   	  <select id="selectuser" resultMap="BaseResultMap"  >
+  		SELECT * FROM t_user WHERE userid in
+
+		(SELECT salaryid FROM t_salary WHERE 1=1 
+		   <if test="salarysum  != '' ">
+  				and salarysum  &gt;= #{salarysum}
+  			</if>
+  			
+			<if test=" salarysum  != '' ">
+				and salarysum  &lt;= #{salarysum2}
+			
+			</if>
+			)
+  </select> 
+  
+   	
+   	
+   	
+   	
+   	<!-- 通过用户ID查询用户全部信息 -->
+    <select id="queryUserAllByuserId" resultMap="UserBaseResultMap" parameterType="java.lang.Integer">
+    	select *
+    	from 
+    	t_user u 
+    	left join t_user_role ur
+    	on u.userid = ur.userid
+    	
+    	left join t_role r
+    	on r.roleId = ur.roleid
+		
+    	left join t_user_tree ut
+    	on u.userid = ut.userid
+    	
+    	left join t_tree t
+    	on t.id = ut.treeid
+    	
+    	<where> 
+    		u.userid = #{id}
+    	</where>
+    </select>
+    <!-- 角色表结构 -->
+    <resultMap id="RoleBaseResultMap" type="com.four.model.Role" >
+    <id column="roleId" property="roleId" jdbcType="INTEGER" />
+    <result column="roleName" property="roleName" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 查询总共的角色 -->
+	<select id="getRoleAll" resultMap="RoleBaseResultMap">
+		select * from t_role
 	</select>
-	<sql id="searchSql">
-<!-- 	<where> -->
-	<trim prefix="WHERE" prefixOverrides="AND |OR ">
-		<if test="username!=null and username!=''">
-		username like concat(#{username},'%')
-		</if>
-		<if test="workNo!=null and workNo!=''">
-		and work_no=#{workNo}
-		</if>
-		<if test="age!=null">
-		and age=#{age}
-		</if>
-		<if test="orgId!=null">
-		and org_id=#{orgId}
-		</if>
-		<if test="pic!=null and pic!=''">
-		and pic=#{pic}
-		</if>
-	</trim>
-	</sql>
+	<!-- 通过Id删除所有的角色 -->
+	<delete id="deleteByUserId">
+		delete from t_user_role where userid = #{userId}
+	</delete>
+	<!-- 添加新出现的角色 -->
+	<insert id="addRolesByUserId">
+		insert into  t_user_role  (userid,roleid )values
+		<foreach collection="list" separator="," item="l">
+			( #{userId},${l} )
+		</foreach>
+	</insert>
+  
+
+  
+  <!-- 总条数 -->
+  <select id="getTotalCount" resultType="int" >
+  	select count(1) from t_user 
+  	 <where>
+  	 	1=1
+  	 	
+  			<if test="user.usernamecriteria != null and user.usernamecriteria != ''">
+  				and username like '%${user.usernamecriteria}%'
+  			</if>
+  			
+  			<if test="user.usersexcriteria != null and user.usersexcriteria != ''">
+  				and usersex = #{user.usersexcriteria}
+  			</if>
+  			
+  			<if test="user.deptidcriteria != null and user.deptidcriteria != ''">
+  				and deptid = #{user.deptidcriteria}
+  			</if>
+  			
+  			<if test="user.typeidcriteria != null and user.typeidcriteria != ''">
+  				and typeid = #{user.typeidcriteria}
+  			</if>
+  			<if test="user.loginnamecriteria != null and user.loginnamecriteria != ''">
+  				and loginname like '%${user.loginnamecriteria}%' 
+  			</if>
+  	</where> 
+  
+  </select>
+  <!-- 分页条件查询 -->
+  <select id="queryUserList" resultMap="BaseResultMap" >
+  		 SELECT
+			<include refid="Base_Column_List" />,
+			tt.typename,
+			td.deptname
+		FROM
+			t_user tu,
+			t_type tt,
+			t_department td
+		WHERE
+			tu.deptid = td.deptid and
+			tu.typeid=tt.typeid
+  		
+  			<if test="user.usernamecriteria != null and user.usernamecriteria != ''">
+  				and tu.username like '%${user.usernamecriteria}%'
+  			</if>
+  			<if test="user.usersexcriteria != null and user.usersexcriteria != ''">
+  				and tu.usersex = #{user.usersexcriteria}
+  			</if>
+  			<if test="user.deptidcriteria != null and user.deptidcriteria != ''">
+  				and tu.deptid = #{user.deptidcriteria}
+  			</if>
+  			<if test="user.typeidcriteria != null and user.typeidcriteria != ''">
+  				and tu.typeid = #{user.typeidcriteria}
+  			</if>
+  			<if test="user.loginnamecriteria != null and user.loginnamecriteria != ''">
+  				and tu.loginname like '%${user.loginnamecriteria}%' 
+  			</if>
+  		 limit #{start},#{pageSize}
+  </select>		
+  <select id="queryUserResumeList" resultMap="BaseResultMap">
+  	<!-- select 
+  		<include refid="Base_Column_List" />
+  		 from t_user where 1 = 1 from t_user tu,t_type tt where tu.typeid = tt.typeid and userid = #{typeidcriteria} -->
+		  SELECT
+			tu.userid,
+			tu.username,
+			tu.usersex,
+			tu.loginname,
+			tu.pwd,
+			tu.deptid,
+			tu.typeid,
+			tt.typename,
+			td.deptname
+		FROM
+			t_user tu,
+			t_type tt,
+			t_department td
+		WHERE
+			tu.deptid = td.deptid and
+			tu.typeid=tt.typeid
+		and tu.userid = #{typeidcriteria}
+  </select>
+  
+  
+  
+  
+  
+  
+  <!-- 查看公司通过Id -->
+  <select id="lookCompany" resultMap="BaseResultMap" parameterType="com.four.model.User">
+  	select 
+	<include refid="Base_Column_List"/>,tc.companyname
+	 from t_company tc,t_user tu where tu.companyid = tc.companyid and tu.userid=#{u.userid}
+  </select>
+  <select id="querySeclect" resultMap="BaseResultMap">
+  	select * from  t_department 
+  </select>
+  <select id="queryTypeListSelect" resultMap="BaseResultMap">
+  	select * from  t_type 
+  </select>
+ 
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user tu
+    where tu.userid = #{userid,jdbcType=INTEGER}
+  </select>
+  <!-- 多表关联级联循环删除 -->
+  <delete id="deleteUserByIds" parameterType="java.util.List" >
+    delete from t_user where userid in
+    <foreach collection="list" separator="," open="("  item="item" close=")">
+    	#{item}
+    </foreach> 
+  <!--  delete
+    	from 
+    	t_user u 
+    	left join t_user_role ur
+    	on u.userid = ur.userid
+    	
+    	left join t_role r
+    	on r.roleId = ur.roleid
+		
+    	left join t_user_tree ut
+    	on u.userid = ut.userid
+    	
+    	left join t_tree t
+    	on t.id = ut.treeid
+    	
+    	<where> 
+    		u.userid = #{id}
+    	</where>
+    	where u.userid =
+    	<foreach collection="list" separator="," item="l" >
+			#{l}
+		</foreach>  -->
+    
+    
+  </delete>
+  <!-- 修改回显 -->
+  <select id="queryUserById" parameterType="String" resultMap="BaseResultMap">
+  	select 
+	 <include refid="Base_Column_List" />
+	 from t_user tu where userid = #{userid}
+  </select>
+<!-- 添加 -->
+  <insert id="addUserData" parameterType="com.four.model.User" >
+    insert into t_user 
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="username != null and username != ''" >
+        username,
+      </if>
+      <if test="usersex != null and usersex != ''" >
+        usersex,
+      </if>
+        <if test="loginname != null and loginname != ''" >
+        loginname,
+      </if>
+        <if test="pwd != null and pwd != ''" >
+        pwd,
+      </if>
+        <if test="deptid != null and deptid != ''" >
+        deptid,
+      </if>
+        <if test="typeid != null and typeid != ''" >
+        typeid,
+      </if>
+      
+        <if test="companyid != null and companyid != ''" >
+        companyid,
+      </if>
+      
+        <if test="userphone != null and userphone != ''" >
+        userphone,
+      </if>
+        <if test="email != null and email != ''" >
+        email,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null  and userid != ''" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null and username != ''" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="usersex != null and usersex != ''" >
+        #{usersex,jdbcType=VARCHAR},
+      </if>
+      <if test="loginname != null and loginname != ''" >
+        #{loginname,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null and pwd != ''" >
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null and deptid != ''" >
+        #{deptid,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null and typeid != ''" >
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="companyid != null and companyid != ''" >
+        #{companyid,jdbcType=INTEGER},
+      </if>
+      <if test="userphone != null and userphone != ''" >
+        #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null and email != ''" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      
+    </trim>
+  </insert>
+  <!-- 修改 -->
+  <update id="updateUserById" parameterType="com.four.model.User" >
+    update t_user tu
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="usersex != null" >
+        usersex = #{usersex,jdbcType=INTEGER},
+      </if>
+      <if test="loginname != null" >
+        loginname = #{loginname,jdbcType=INTEGER},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=INTEGER},
+      </if>
+      <if test="deptid != null" >
+        deptid = #{deptid,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null" >
+        typeid = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="companyid != null" >
+        companyid = #{companyid,jdbcType=INTEGER},
+      </if>
+      <if test="userphone != null" >
+        userphone = #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      
+    </set>
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+<!-- 
+SELECT
+	tu.userid,
+	tu.username,
+	tu.usersex,
+	tu.loginname,
+	tu.pwd,
+	tu.deptid,
+	tu.typeid,
+tt.typename
+FROM
+	t_user tu,
+	t_type tt
+WHERE
+	tu.typeid=tt.typeid
+AND tu.userid = 5
+
+
+ -->
 </mapper>

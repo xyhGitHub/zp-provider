@@ -22,14 +22,32 @@
 	
 	<!-- 注入实现类 -->
    <bean id="userService" class="com.four.service.impl.UserServiceImpl"></bean>
-   <!-- 提供方应用名称信息，这个相当于起一个名字，我们dubbo管理页面比较清晰是哪个应用暴露出来的,保持唯一性 -->  
+   <bean id="solrService" class="com.four.service.impl.SolrServiceImpl"></bean>
+   <bean id="ossService" class="com.four.service.impl.OssServiceImpl"></bean>
+   <!-- 提供方应用名称信息，这个相当于起一个名字，我们dubbo管理页面比较清晰是哪个应用暴露出来的,保持唯一性 -->
    <dubbo:application name="dubbo_provider_api"></dubbo:application>
    <!-- 使用zookeeper注册中心暴露服务地址 -->    
-   <dubbo:registry address="zookeeper://192.168.31.211:2181" register="" check="false" subscribe="false" />
-   <!-- dubbo端口号 -->  
+   <dubbo:registry address="zookeeper://127.0.0.1:2181" register="" check="false" subscribe="false" />
+   <!--192.168.31.211-->
+    <!-- dubbo端口号 -->
    <dubbo:protocol name="dubbo" port="20881" ></dubbo:protocol>
    
-   <dubbo:service interface="com.four.service.UserService" ref="userService" />
+   <dubbo:service interface="com.four.service.IUserService" ref="userService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.SolrService" ref="solrService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.IOssService" ref="ossService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.ILoginService" ref="loginService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.IServiceTree" ref="treeService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.RoleService" ref="roleService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.CompanyService" ref="companyService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.IbossService" ref="bossService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.IDeptService" ref="deptService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.IPhotoService" ref="photoService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.ISalaryService" ref="salarService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.JiuYeService" ref="jiuyeService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.PostService" ref="postService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.TypeService" ref="typeService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.WGQService" ref="wgqService" timeout="5000"/>
+   <dubbo:service interface="com.four.service.INoticeService" ref="noticeService" timeout="5000"/>
 
 
 </beans>
