@@ -79,14 +79,6 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-		<!--solr客户端solrj的依赖 -->
-<!--
-		<dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-solrj</artifactId>
-			<version>4.10.3	</version>
-		</dependency>
--->
 		<!--oss-->
 		<dependency>
 			<groupId>com.aliyun.oss</groupId>
@@ -99,17 +91,17 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-solr</artifactId>
 		</dependency>
-
+		<!--solr客户端solrj的依赖 -->
 		<!--redis -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-redis</artifactId>
 			<version>1.4.5.RELEASE</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-data-mongodb</artifactId>-->
+		<!--</dependency>-->
 
 		<dependency>
 				<groupId>com.alibaba</groupId>
@@ -131,7 +123,14 @@
 				<artifactId>zkclient</artifactId>
 				<version>0.4</version>
 			</dependency>
-			</dependencies>
+
+		<!--pagehelper 分页-->
+		<!--<dependency>-->
+			<!--<groupId>com.github.pagehelper</groupId>-->
+			<!--<artifactId>pagehelper-spring-boot-starter</artifactId>-->
+			<!--<version>1.1.1</version>-->
+		<!--</dependency>-->
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -140,6 +139,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+
 	</build>
 
 

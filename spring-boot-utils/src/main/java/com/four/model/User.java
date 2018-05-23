@@ -26,7 +26,7 @@ import java.util.Set;
  * @version </pre>    
  */
 public class User implements Serializable{
-	
+
 	private static final long serialVersionUID = 4185009803373372107L;
 
 	//用户id

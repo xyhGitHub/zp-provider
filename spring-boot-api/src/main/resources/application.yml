@@ -2,22 +2,20 @@ server:
   port: 8086
 spring:
   datasource:
-    url: jdbc:mysql://192.168.31.112:3306/seven?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+    url: jdbc:mysql://192.168.31.112:3306/seven?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=true
     username: root
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
-
-mybatis:
-  mapper-locations: classpath:mapping/*.xml
-  type-aliases-package: com.four.model
+  mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.four.model
 
   data:
     mongodb:
       uri: mongodb://192.168.116.129:27017/fff
-  application:
     name: mongoweb
-
-
+    solr:
+      host: http://localhost:8083/solr/lastCore/
 
 redis:
     #database:9

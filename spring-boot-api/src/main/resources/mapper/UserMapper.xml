@@ -53,30 +53,12 @@
 			)
   </select> 
   
-   	
-   	
-   	
-   	
    	<!-- 通过用户ID查询用户全部信息 -->
     <select id="queryUserAllByuserId" resultMap="UserBaseResultMap" parameterType="java.lang.Integer">
-    	select *
-    	from 
-    	t_user u 
-    	left join t_user_role ur
-    	on u.userid = ur.userid
-    	
-    	left join t_role r
-    	on r.roleId = ur.roleid
-		
-    	left join t_user_tree ut
-    	on u.userid = ut.userid
-    	
-    	left join t_tree t
-    	on t.id = ut.treeid
-    	
-    	<where> 
-    		u.userid = #{id}
-    	</where>
+    	select *from t_user u left join t_user_role ur on u.userid = ur.userid
+    	left join t_role r on r.roleId = ur.roleid left join t_user_tree ut on u.userid = ut.userid
+    	 left join t_tree t on t.id = ut.treeid
+        <where> u.userid = #{id} </where>
     </select>
     <!-- 角色表结构 -->
     <resultMap id="RoleBaseResultMap" type="com.four.model.Role" >
@@ -104,27 +86,22 @@
   <!-- 总条数 -->
   <select id="getTotalCount" resultType="int" >
   	select count(1) from t_user 
-  	 <where>
-  	 	1=1
-  	 	
-  			<if test="user.usernamecriteria != null and user.usernamecriteria != ''">
-  				and username like '%${user.usernamecriteria}%'
-  			</if>
-  			
-  			<if test="user.usersexcriteria != null and user.usersexcriteria != ''">
-  				and usersex = #{user.usersexcriteria}
-  			</if>
-  			
-  			<if test="user.deptidcriteria != null and user.deptidcriteria != ''">
-  				and deptid = #{user.deptidcriteria}
-  			</if>
-  			
-  			<if test="user.typeidcriteria != null and user.typeidcriteria != ''">
-  				and typeid = #{user.typeidcriteria}
-  			</if>
-  			<if test="user.loginnamecriteria != null and user.loginnamecriteria != ''">
-  				and loginname like '%${user.loginnamecriteria}%' 
-  			</if>
+  	 <where> 1=1
+         <if test="user.usernamecriteria != null and user.usernamecriteria != ''">
+  			  and username like '%${user.usernamecriteria}%'
+         </if>
+         <if test="user.usersexcriteria != null and user.usersexcriteria != ''">
+  			  and usersex = #{user.usersexcriteria}
+         </if>
+        <if test="user.deptidcriteria != null and user.deptidcriteria != ''">
+            and deptid = #{user.deptidcriteria}
+        </if>
+        <if test="user.typeidcriteria != null and user.typeidcriteria != ''">
+            and typeid = #{user.typeidcriteria}
+        </if>
+        <if test="user.loginnamecriteria != null and user.loginnamecriteria != ''">
+            and loginname like '%${user.loginnamecriteria}%'
+        </if>
   	</where> 
   
   </select>
@@ -183,11 +160,6 @@
 		and tu.userid = #{typeidcriteria}
   </select>
   
-  
-  
-  
-  
-  
   <!-- 查看公司通过Id -->
   <select id="lookCompany" resultMap="BaseResultMap" parameterType="com.four.model.User">
   	select 
@@ -213,31 +185,7 @@
     delete from t_user where userid in
     <foreach collection="list" separator="," open="("  item="item" close=")">
     	#{item}
-    </foreach> 
-  <!--  delete
-    	from 
-    	t_user u 
-    	left join t_user_role ur
-    	on u.userid = ur.userid
-    	
-    	left join t_role r
-    	on r.roleId = ur.roleid
-		
-    	left join t_user_tree ut
-    	on u.userid = ut.userid
-    	
-    	left join t_tree t
-    	on t.id = ut.treeid
-    	
-    	<where> 
-    		u.userid = #{id}
-    	</where>
-    	where u.userid =
-    	<foreach collection="list" separator="," item="l" >
-			#{l}
-		</foreach>  -->
-    
-    
+    </foreach>
   </delete>
   <!-- 修改回显 -->
   <select id="queryUserById" parameterType="String" resultMap="BaseResultMap">
@@ -249,72 +197,10 @@
   <insert id="addUserData" parameterType="com.four.model.User" >
     insert into t_user 
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="userid != null" >
-        userid,
-      </if>
-      <if test="username != null and username != ''" >
-        username,
-      </if>
-      <if test="usersex != null and usersex != ''" >
-        usersex,
-      </if>
-        <if test="loginname != null and loginname != ''" >
-        loginname,
-      </if>
-        <if test="pwd != null and pwd != ''" >
-        pwd,
-      </if>
-        <if test="deptid != null and deptid != ''" >
-        deptid,
-      </if>
-        <if test="typeid != null and typeid != ''" >
-        typeid,
-      </if>
-      
-        <if test="companyid != null and companyid != ''" >
-        companyid,
-      </if>
-      
-        <if test="userphone != null and userphone != ''" >
-        userphone,
-      </if>
-        <if test="email != null and email != ''" >
-        email,
-      </if>
-      
+        userid,username,usersex, loginname,pwd, deptid,typeid,companyid,userphone,email,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="userid != null  and userid != ''" >
-        #{userid,jdbcType=INTEGER},
-      </if>
-      <if test="username != null and username != ''" >
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="usersex != null and usersex != ''" >
-        #{usersex,jdbcType=VARCHAR},
-      </if>
-      <if test="loginname != null and loginname != ''" >
-        #{loginname,jdbcType=VARCHAR},
-      </if>
-      <if test="pwd != null and pwd != ''" >
-        #{pwd,jdbcType=VARCHAR},
-      </if>
-      <if test="deptid != null and deptid != ''" >
-        #{deptid,jdbcType=INTEGER},
-      </if>
-      <if test="typeid != null and typeid != ''" >
-        #{typeid,jdbcType=INTEGER},
-      </if>
-      <if test="companyid != null and companyid != ''" >
-        #{companyid,jdbcType=INTEGER},
-      </if>
-      <if test="userphone != null and userphone != ''" >
-        #{userphone,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null and email != ''" >
-        #{email,jdbcType=VARCHAR},
-      </if>
-      
+        #{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{usersex,jdbcType=VARCHAR}, #{loginname,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{deptid,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, #{companyid,jdbcType=INTEGER},#{userphone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},
     </trim>
   </insert>
   <!-- 修改 -->
