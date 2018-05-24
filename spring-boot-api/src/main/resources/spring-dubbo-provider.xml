@@ -37,7 +37,7 @@
     <dubbo:service interface="com.four.service.IOssService" ref="ossService" timeout="60000"/>
     <dubbo:service interface="com.four.service.ILoginService" ref="loginService" timeout="60000"/>
     <dubbo:service interface="com.four.service.IServiceTree" ref="treeService" timeout="60000"/>
-    <dubbo:service interface="com.four.service.RoleService" ref="roleService" timeout="60000"/>
+    <dubbo:service interface="com.four.service.RoleService" ref="roleService" timeout="60000" />
     <dubbo:service interface="com.four.service.CompanyService" ref="companyService" timeout="60000"/>
     <dubbo:service interface="com.four.service.IDeptService" ref="deptService" timeout="60000"/>
     <dubbo:service interface="com.four.service.IPhotoService" ref="photoService" timeout="60000"/>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.four.dao.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.four.model.Role" >
+    <id column="roleId" property="roleId" jdbcType="INTEGER" />
+    <result column="roleName" property="roleName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    roleId, roleName
+  </sql>
+  
+
+
+  <update id="updateRoleById" parameterType="com.four.model.Role" >
+		update t_role
+		<set>
+			<if test="roleName != null">
+				roleName = #{roleName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where roleId = #{roleId,jdbcType=DECIMAL}
+	</update>
+
+
+
+
+<!--   增加角色 -->
+  <insert id="insertRole">
+    insert into t_role (roleId, roleName)
+    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR})
+  </insert>
+  
+  
+<!--   查询总条数     -->
+  <select id="querycount" resultType="Long">
+  select count(*) from t_role  
+   </select>
+   
+<!--    查询分页    -->
+   <select id="queryRole"  resultMap="BaseResultMap" >
+   select * from t_role
+    limit #{start},#{end}
+    </select>
+<!--   删除角色  批量删除角色 -->
+    <delete id="deleteRoleByIDs" parameterType="java.lang.String" >
+    delete from t_role
+    where roleId in
+    <foreach item="item" index="index" collection="ar" open="(" separator="," close=")"> 
+    #{item} 
+    </foreach>
+  </delete>
+  
+
+
+<!--   修改根据id查询  进行回显-->
+  <select id="toRoleById" resultMap="BaseResultMap" parameterType="com.four.model.Role" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_role
+    where roleId = #{roleId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

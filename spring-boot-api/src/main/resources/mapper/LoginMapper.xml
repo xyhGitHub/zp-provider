@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.four.dao.ILoginDao" >
+  <resultMap id="BaseResultMap" type="com.four.model.User" >
+   <id column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="usersex" property="usersex" jdbcType="VARCHAR" />
+    <result column="loginname" property="loginname" jdbcType="VARCHAR" />
+    <result column="pwd" property="pwd" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="INTEGER" />
+    <result column="typeid" property="typeid" jdbcType="INTEGER" />
+    <result column="userphone" property="userphone" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+ <!-- 验证用户名和密码 -->
+   <select id="login" resultMap="BaseResultMap" parameterType="com.four.model.User">
+   select * from t_user where loginname=#{user.loginname} and pwd=#{user.pwd}
+  </select>
+ <!-- 验证企业名和密码 -->
+   <select id="logincompany" resultType="com.four.model.User" parameterType="com.four.model.User">
+   select * from t_user t,t_company c where t.companyid=c.companyid and c.companyname=#{user.companyname} and pwd=#{user.pwd}
+  </select>
+  
+  <!-- 验证登录名是否已经存在 -->
+  <select id="checkUserNameLogin" parameterType="java.lang.String" resultMap="BaseResultMap">
+	select * from t_user where loginname = #{user.loginname}
+</select>
+  
+  <!-- 用户的注册 -->
+  <insert id="addUserLogin" parameterType="com.four.model.User">
+  
+    insert into t_user (userid,username, loginname, pwd,typeid,userphone)
+    values 
+    (#{userid,jdbcType=INTEGER},
+    #{username,jdbcType=VARCHAR} ,
+    #{loginname,jdbcType=VARCHAR},
+    #{pwd,jdbcType=VARCHAR},
+    #{typeid,jdbcType=INTEGER},
+    #{userphone,jdbcType=VARCHAR})
+  
+  </insert>
+  
+  <select id="getResourcesRoleListLogin"  parameterType="com.four.model.User" resultType="java.util.LinkedHashMap">
+       
+       select * from t_user_role ur,t_role tr,t_user_role rt,t_tree tt where
+       ur.roleid=tr.roleId and tr.roleId=rt.roleId and rt.userid=tt.id
+       and ur.userid = #{userid}
+  </select>
+  
+  
+  </mapper>

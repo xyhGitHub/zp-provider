@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.four.dao.IPhotoDao" >
+  <resultMap id="BaseResultMap" type="com.four.model.Photo" >
+    <id column="photoid" property="photoid" jdbcType="INTEGER" />
+    <result column="photoname" property="photoname" jdbcType="VARCHAR" />
+    <result column="uploadtime" property="uploadtime" jdbcType="VARCHAR" />
+    <result column="downloadtime" property="downloadtime" jdbcType="VARCHAR" />
+    <result column="photostatus" property="photostatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    photoid,photoname, uploadtime, downloadtime, photostatus
+  </sql>
+  
+  
+  <select id="queryPhotoList" resultType="com.four.model.Photo" >
+    select * from t_photo where photostatus = 1
+  </select>
+  
+  <select id="queryPhotoLists" resultType="com.four.model.Photo" >
+    select * from t_photo where photostatus = 2
+  </select>
+  
+  <!-- 新增 -->
+  <insert id="addPhoto" parameterType="com.four.model.Photo">
+  	insert into t_photo
+  	<trim prefix="(" suffix=")" suffixOverrides=",">
+  		<if test="photoid !=null and photoid != ''">
+  			photoid,
+  		</if>
+  		<if test="photoname !=null and photoname != ''">
+  			photoname,
+  		</if>
+  		<if test="uploadtime !=null and uploadtime != ''">
+  			uploadtime,
+  		</if>
+  		<if test="downloadtime !=null and downloadtime != ''">
+  			downloadtime,
+  		</if>
+  		<if test="photostatus !=null and photostatus != ''">
+  			photostatus,
+  		</if>
+  	</trim>
+  	<trim prefix=" values (" suffix=")" suffixOverrides=",">
+  		<if test="photoid !=null and photoid != ''">
+  			#{photoid,jdbcType=VARCHAR},
+  		</if>
+  		<if test="photoname !=null and photoname != ''">
+  			#{photoname,jdbcType=VARCHAR},
+  		</if>
+  		<if test="uploadtime !=null and uploadtime != ''">
+  			#{uploadtime,jdbcType=VARCHAR},
+  		</if>
+  		<if test="downloadtime !=null and downloadtime != ''">
+  			#{downloadtime,jdbcType=VARCHAR},
+  		</if>
+  		<if test="photostatus !=null and photostatus != ''">
+  			#{photostatus,jdbcType=VARCHAR},
+  		</if>
+  	</trim>
+  </insert>
+  
+ <!--  <update id="updateTree" parameterType="com.four.model.Photo" >
+    update t_photo
+    <set >
+      <if test="text != null" >
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id}
+  </update> -->
+  
+
+   <!-- 上传图片 -->
+ <!--   <insert id="uploadImg">
+     insert into t_photo 
+     (photoid,photoname,uploadtime,downloadtime,photostatus) values
+   	(#{photoid,jdbcType=INTEGER},
+    #{photoname,jdbcType=VARCHAR},
+    #{uploadtime,jdbcType=VARCHAR},
+    #{downloadtime,jdbcType=VARCHAR},
+    #{photostatus,jdbcType=VARCHAR})
+   </insert> -->
+   
+  
+</mapper>

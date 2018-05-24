@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.four.dao.CompanyMapper" >
+  <resultMap id="BaseResultMap" type="com.four.model.Company" >
+    <id column="companyid" property="companyid" jdbcType="INTEGER" />
+    <result column="companyName" property="companyName" jdbcType="VARCHAR" />
+    <result column="companyAudit" property="companyAudit" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    companyid, companyName, companyAudit
+  </sql>
+  
+  <insert id="insertCompany" parameterType="com.four.model.Company">
+    insert into t_Company (companyid, companyName, companyAudit)
+    values (#{companyid,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR},2)
+  </insert>
+  
+  
+<!--   查询总条数     -->
+  <select id="querycount" resultType="Long">
+  select count(*) from t_Company  
+   </select>
+   
+<!--    查询分页    -->
+   <select id="queryCompany"  resultMap="BaseResultMap" >
+   select * from t_Company
+    limit #{start},#{end}
+    </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_Company
+    where companyid = #{companyid,jdbcType=INTEGER}
+  </select>
+  
+  
+  <!--   删除角色  批量删除角色 -->
+    <delete id="deleteCompanyByIDs" parameterType="java.lang.String" >
+    delete from t_company
+    where companyId in
+    <foreach item="item" index="index" collection="ar" open="(" separator="," close=")"> 
+    #{item} 
+    </foreach>
+  </delete>
+  
+  <!-- 审核 -->
+  <update id="updateCompanyById" parameterType="com.four.model.Company" >
+    update t_Company set companyAudit = 1
+    where companyid = #{companyid}
+  </update>
+  
+  
+  <insert id="insert" parameterType="com.four.model.Company" >
+    insert into t_Company (companyid, companyName,)
+    values (#{companyid,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.four.model.Company" >
+    insert into t_Company
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="Companyid != null" >
+        companyid,
+      </if>
+      <if test="Companyname != null" >
+        CompanyName,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="Companyid != null" >
+        #{companyid,jdbcType=INTEGER},
+      </if>
+      <if test="Companyname != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      
+      
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.four.model.Company" >
+    update t_Company
+    <set >
+      <if test="Companyname != null" >
+        companyName = #{companyName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where companyid = #{companyid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.four.model.Company" >
+    update t_Company
+    set companyName = #{companyName,jdbcType=VARCHAR}
+    where companyid = #{companyid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.four.dao.PostMapper" >
+  <resultMap id="BaseResultMap" type="com.four.model.Post" >
+    <id column="postid" property="postid" jdbcType="INTEGER" />
+    <result column="postname" property="postname" jdbcType="VARCHAR" />
+    <result column="postcompany" property="postcompany" jdbcType="INTEGER" />
+   
+  </resultMap>
+  <sql id="Base_Column_List" >
+    postid, postname, postcompany
+  </sql>
+  
+  <insert id="insertPost" parameterType="com.four.model.Post">
+    insert into t_post (postid, postname, postcompany)
+    values (#{postid,jdbcType=INTEGER}, #{postname,jdbcType=VARCHAR}, #{postcompany,jdbcType=INTEGER})
+  </insert>
+  
+  
+<!--   查询总条数     -->
+  <select id="querycount" resultType="Long">
+  select count(*) from t_post  
+   </select>
+   
+<!--    查询分页    -->
+   <select id="queryPost"  resultMap="BaseResultMap" >
+   select * from t_post
+    limit #{start},#{end}
+    </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_post
+    where postid = #{postid,jdbcType=INTEGER}
+  </select>
+  
+  
+  <!--   删除  批量删除 -->
+    <delete id="deletePostByIDs" parameterType="java.lang.String" >
+    delete from t_post
+    where postId in
+    <foreach item="item" index="index" collection="ar" open="(" separator="," close=")"> 
+    #{item} 
+    </foreach>
+  </delete>
+  <!-- 两表联查 -->
+ <select id="querycompanyname" parameterType="int" resultType="String">
+ select companyname from t_company where companyid=#{postcompany}
+ </select>
+ <!-- 关联查 -->
+ <select id="querycompanys"  resultType="com.four.model.Company">
+ select * from t_company 
+ </select>
+ 
+ 
+ <select id="queryusers" parameterType="int" resultType="com.four.model.User">
+ select * from t_user u, post_qiuzhi p 
+ where u.companyid = p.companyid and 
+ u.typeid = p.typeid and p.postid = #{postid}
+ 
+ 
+ </select>
+ <!-- <select id="queryusers" resultType="com.four.model.User">
+ 
+ select * from t_user
+ 
+ </select> -->
+  
+  
+  <insert id="insert" parameterType="com.four.model.Post" >
+    insert into t_post (postid, postname, postcompany)
+    values (#{postid,jdbcType=INTEGER}, #{postname,jdbcType=VARCHAR}, #{postcompany,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.four.model.Post" >
+    insert into t_post
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="Postid != null" >
+        postid,
+      </if>
+      <if test="postname != null" >
+        postname,
+      </if>
+      <if test="Postcompany != null" >
+        Postcompany,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="postid != null" >
+        #{postid,jdbcType=INTEGER},
+      </if>
+      <if test="postname != null" >
+        #{postname,jdbcType=VARCHAR},
+      </if>
+      <if test="postcompany != null" >
+        #{postcompany,jdbcType=VARCHAR},
+      </if>
+      
+      
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.four.model.Post" >
+    update t_post
+    <set >
+      <if test="postname != null" >
+        postname = #{postname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where postid = #{postid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.four.model.Post" >
+    update t_post
+    set postname = #{postname,jdbcType=VARCHAR}
+    where postid = #{postid,jdbcType=INTEGER}
+  </update>
+</mapper>

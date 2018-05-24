@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.four.dao.BossDao" >
+  <resultMap id="BaseResultMap" type="com.four.model.User" >
+    <id column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="usersex" property="usersex" jdbcType="VARCHAR" />
+    <result column="loginname" property="loginname" jdbcType="VARCHAR" />
+    <result column="pwd" property="pwd" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="INTEGER" />
+    <result column="typeid" property="typeid" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userid, username, usersex, loginname, pwd, deptid, typeid,email
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  <select id="bossBossUserById" resultMap="BaseResultMap" resultType="com.four.model.User" >
+ 	 select u.username,u.email  from t_user u where  userid = #{userid,jdbcType=INTEGER}
+ 	  
+  </select> 
+  
+  
+    <select id="selectCount"  resultType="java.lang.Integer">
+  	select count(*) from t_user where typeid=2  or typeid=5 
+  </select>
+  
+     <select id="bossUserlist" resultMap="BaseResultMap" >
+ 	 select * from t_user where typeid=2  or typeid=5 
+ 	  
+ 	 limit #{start},#{rows}
+  </select> 
+  
+  
+  <!-- 通过面试 -->
+  <update id="updateBossUserById" parameterType="java.lang.Integer" >
+    update t_user set typeid = 5
+    where userid = #{userid}
+  </update>
+  
+  
+  <!-- 拒绝面试-->
+  <update id="updateBossUserByNoId" parameterType="int" >
+    update t_user set typeid = 4
+    where userid = #{userid}
+  </update>
+  
+  
+  
+  
+  
+ 
+</mapper>

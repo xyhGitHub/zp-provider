@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.four.dao.JiuYeMapper" >
+  <resultMap id="BaseResultMap" type="com.four.model.JiuYe" >
+    <id column="tjid" property="tjid" jdbcType="INTEGER" />
+    <result column="qiuzhicount" property="qiuzhicount" jdbcType="INTEGER" />
+    <result column="rizhicount" property="rizhicount" jdbcType="INTEGER" />
+    <result column="jiuyelv" property="jiuyelv" jdbcType="DOUBLE" />
+    <result column="starttime" property="starttime" jdbcType="DATE" />
+    <result column="endtime" property="endtime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tjid, qiuzhicount, rizhicount, jiuyelv, starttime, endtime
+  </sql>
+  
+  
+  <!--   查询总条数     -->
+  <select id="querycount" resultType="Long">
+  select count(*) from t_tongji  
+   </select>
+  <select id="qiuzhiCount" resultType="java.lang.Integer">
+	select count(*) from t_user u where u.typeid=2 or u.typeid=4 or u.typeid=5  
+	 </select>
+  <select id="ruzhiCount" resultType="java.lang.Integer">
+  select count(*) from t_user u where u.typeid=2 
+   </select>
+   
+<!--    查询分页    -->
+   <select id="queryTongJi"  resultMap="BaseResultMap" >
+   select * from t_tongji
+    limit #{start},#{end}
+    </select>
+    
+   <update id="updateQiuZhiCount"  parameterType="com.four.model.JiuYe" >
+     update t_tongji
+    set qiuzhicount = qiuzhicount+1
+    </update>
+  
+  <update id="updateRuZhiCount"  parameterType="com.four.model.JiuYe" >
+     update t_tongji
+ 	 set  rizhicount = rizhicount+1
+    </update>
+  <update id="updateJiuYeLv"  parameterType="com.four.model.JiuYe" >
+      update t_tongji  set
+    jiuyelv = rizhicount/qiuzhicount
+    </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_tongji
+    where tjid = #{tjid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_tongji
+    where tjid = #{tjid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.four.model.JiuYe" >
+    insert into t_tongji (tjid, qiuzhicount, rizhicount, 
+      jiuyelv, starttime
+      )
+    values (#{tjid,jdbcType=INTEGER}, #{qiuzhicount,jdbcType=INTEGER}, #{rizhicount,jdbcType=INTEGER}, 
+      #{rizhicount,jdbcType=INTEGER}/#{qiuzhicount,jdbcType=INTEGER}, #{starttime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.four.model.JiuYe" >
+    insert into t_tongji
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tjid != null" >
+        tjid,
+      </if>
+      <if test="qiuzhicount != null" >
+        qiuzhicount,
+      </if>
+      <if test="rizhicount != null" >
+        rizhicount,
+      </if>
+      <if test="jiuyelv != null" >
+        jiuyelv,
+      </if>
+      <if test="starttime != null" >
+        starttime,
+      </if>
+      <if test="endtime != null" >
+        endtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tjid != null" >
+        #{tjid,jdbcType=INTEGER},
+      </if>
+      <if test="qiuzhicount != null" >
+        #{qiuzhicount,jdbcType=INTEGER},
+      </if>
+      <if test="rizhicount != null" >
+        #{rizhicount,jdbcType=INTEGER},
+      </if>
+      <if test="jiuyelv != null" >
+        #{jiuyelv,jdbcType=DOUBLE},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=DATE},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.four.model.JiuYe" >
+    update t_tongji
+    <set >
+      <if test="qiuzhicount != null" >
+        qiuzhicount = #{qiuzhicount,jdbcType=INTEGER},
+      </if>
+      <if test="rizhicount != null" >
+        rizhicount = #{rizhicount,jdbcType=INTEGER},
+      </if>
+      <if test="jiuyelv != null" >
+        jiuyelv = #{jiuyelv,jdbcType=DOUBLE},
+      </if>
+      <if test="starttime != null" >
+        starttime = #{starttime,jdbcType=DATE},
+      </if>
+      <if test="endtime != null" >
+        endtime = #{endtime,jdbcType=DATE},
+      </if>
+    </set>
+    where tjid = #{tjid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.four.model.JiuYe" >
+    update t_tongji
+    set qiuzhicount = #{qiuzhicount,jdbcType=INTEGER},
+      rizhicount = #{rizhicount,jdbcType=INTEGER},
+      jiuyelv = #{jiuyelv,jdbcType=DOUBLE},
+      starttime = #{starttime,jdbcType=DATE},
+      endtime = #{endtime,jdbcType=DATE}
+    where tjid = #{tjid,jdbcType=INTEGER}
+  </update>
+</mapper>

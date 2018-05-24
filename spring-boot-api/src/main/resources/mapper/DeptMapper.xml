@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.four.dao.IDeptDao" >
+  <resultMap id="BaseResultMap" type="com.four.model.Dept" >
+    <id column="deptid" property="deptid" jdbcType="INTEGER" />
+    <result column="deptname" property="deptname" jdbcType="VARCHAR" />
+    
+    <result column="usernames" property="usernames" jdbcType="VARCHAR" />
+    <result column="usersexs" property="usersexs" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    deptid, deptname
+  </sql>
+  
+  <!-- 查询总数 -->
+  <select id="queryCount" resultType="java.lang.Long" >
+    select count(*) from t_department where 1=1
+    <if test="dept.deptid!=null">
+       and deptid like '%${dept.deptid}%'
+    </if>
+  </select>
+  <!-- 分页 -->
+  <select id="queryDeptInfo" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_department where 1=1 
+    <if test="dept.deptid!=null">
+       and deptid like '%${dept.deptid}%'
+    </if>
+     limit #{start},#{rows}
+  </select>
+  
+
+	
+	<select id="queryDeptName" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_department where 1=1 
+  </select>
+  
+  
+	<select id="queryDeptNum" resultMap="BaseResultMap">
+   		select deptname,username usernames,usersex usersexs from t_department t1,t_user t2,t_user_dept t3
+		where t1.deptid=t3.deptid and t2.userid=t3.userid and t1.deptid=#{deptid}
+  	</select>
+
+  
+  <!-- 新增 -->
+    <insert id="addDept" parameterType="com.four.model.Dept" >
+    insert into t_department (deptid, deptname
+      )
+    values (#{deptid,jdbcType=INTEGER}, 
+    #{deptname,jdbcType=VARCHAR} 
+      )
+  	</insert>
+  	<!-- 删除 -->
+  	<delete id="deleteSome" >
+    delete from t_department
+    where deptid in
+    <foreach collection="list" item="idList" separator="," open="(" close=")">
+            #{idList}
+    </foreach>
+  </delete>
+
+  
+  <select id="queryInfoById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_department
+    where deptid = #{deptid}
+  </select>
+  
+  <update id="updateInfo" parameterType="com.four.model.Dept" >
+    update t_department
+    set deptname = #{deptname,jdbcType=VARCHAR},
+    where deptid = #{deptid,jdbcType=INTEGER}
+  </update>
+  
+ 
+ 
+  
+</mapper>
