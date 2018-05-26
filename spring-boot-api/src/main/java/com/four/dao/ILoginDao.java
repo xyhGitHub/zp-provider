@@ -13,28 +13,25 @@ import java.util.Map;
 import com.four.model.LoginGs;
 import com.four.model.LoginUser;
 import com.four.model.TongJi;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 import com.four.model.User;
-import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface ILoginDao {
 
-
-	@Insert("insert into t_login_user (loginId,username, loginName, loginPwd,userType)\n" +
-			"        values" +
-			"        (#{loginId,jdbcType=INTEGER}," +
-			"        #{loginName,jdbcType=VARCHAR}," +
-			"        #{loginPwd,jdbcType=VARCHAR}," +
-			"        #{userType,jdbcType=INTEGER})")
+	@Insert("insert into t_login_user (loginName, loginPwd,userType,createtime)" +
+			"        values(" +
+			"        #{laGouUser.loginName}," +
+			"        #{laGouUser.loginPwd}," +
+			"        #{laGouUser.userType}," +
+			"		  #{laGouUser.createtime})")
 	void addLoginUserInfo(@Param("laGouUser")LoginUser laGouUser);
 
 	@Select("select * from t_login_user where loginName = #{laGouUser.loginName}")
 	LoginUser laGouRegCheck(@Param("loginName") String loginName);
 
+	//前台登录
 	@Select("select * from t_login_user where loginName=#{laGouUser.loginName} and loginPwd=#{laGouUser.loginPwd}")
 	LoginUser laGouLogin(@Param("laGouUser") LoginUser laGouUser);
 
@@ -76,7 +73,8 @@ public interface ILoginDao {
 			"    #{user.userphone,jdbcType=VARCHAR})")
 	void addUserLogin(@Param("user")User user);
 
-	@Select("SELECT count(1) nums,createtime names FROM t_login_user GROUP BY createtime;")
+	//统计注册人数
+	@Select("SELECT count(1) nums,createtime names FROM t_login_user GROUP BY createtime")
     List<TongJi> tongJiRegNum();
 
 	//后台登陆
@@ -102,4 +100,13 @@ public interface ILoginDao {
 	@Insert("insert into t_login_user_185 (loginTel,loginPwd,createtime) " +
 			" values (#{loginGs.loginTel},#{loginGs.loginPwd},#{loginGs.createtime})")
 	void addRegGS185(@Param("loginGs") LoginGs loginGs);
+
+	@Select("select loginId from t_login_user where loginName = #{loginName}")
+	Integer queryIdByName(@Param("loginName") String loginName);
+
+	@Update("update t_login_user set userid = #{loginId} where loginId = #{loginId}")
+	void updateLoginById(@Param("loginId") Integer loginId);
+
+	@Update("update t_login_user set comid = #{loginId} where loginId = #{loginId}")
+	void updateLoginGsById(Integer loginId);
 }

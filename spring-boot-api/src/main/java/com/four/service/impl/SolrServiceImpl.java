@@ -49,7 +49,10 @@ public class SolrServiceImpl implements SolrService {
 	@Override
 	public PageModel<ZhiweiLittle> getSolrList(PageModel pageModel,
 			 ZhiweiLittle productAndCate) throws Exception {
-		
+
+		System.out.println(productAndCate);
+		System.out.println(pageModel);
+
 		//获取query 对象
 		SolrQuery query = new SolrQuery();
 		
@@ -97,8 +100,6 @@ public class SolrServiceImpl implements SolrService {
 			
 			zhiweiLittle1.setId(Integer.valueOf(solrDocument.get("id").toString()));
 			 
-			zhiweiLittle1.setId(Integer.valueOf(solrDocument.get("id").toString()));
-			
 			 if (highlighting.get(solrDocument.get("id")) != null && highlighting.get(solrDocument.get("id")).get("name") != null) {
 	             //设置高亮
                String name = highlighting.get(solrDocument.get("id")).get("name").get(0);

@@ -14,6 +14,7 @@ import com.four.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /** 
  * <pre>项目名称：four_group    
@@ -33,8 +34,7 @@ public interface ILoginService {
 	//前台注册检验
 	Integer laGouRegCheck(LoginUser laGouUser);
 	//前台登录
-	Integer laGouLogin(LoginUser laGouUser);
-
+	Map<String,Object> laGouLogin(LoginUser laGouUser);
 
 	User login(User user)throws Exception;
 
@@ -71,5 +71,17 @@ public interface ILoginService {
 
 	//后台公司注册
 	Integer addRegGS(LoginGs loginGs);
+
+	//前台注册修改userid
+	void queryIdByName(String loginName);
+
+	//前台查询登录id并修改comid
+	void queryComIdByName(String loginName);
+
+	//前台注册检测手机号
+	Integer laGouRegGSCheck(LoginUser laGouUser);
+
+	//前台登录公司
+	Map<String,Object> laGouLoginGS(LoginUser laGouUser);
 
 }

@@ -34,6 +34,9 @@ public interface GongSiDao {
     @Insert("insert into t_company (comid) values (#{com.comid})")
     void addGongSiInfo(@Param("com") GongSi com);
 
+    @Insert("insert into t_company (comid) values (#{loginId})")
+    void addGongSiId(Integer loginId);
+
    /* @Insert("insert into t_guanggao values(#{guanggao.gid},#{guanggao.imageurl},#{guanggao.pid},#{guanggao.info},#{guanggao.companyid},#{guanggao.status})")
     void saveguanggao(@Param("guanggao") Guanggao guanggao);
     @Update("update  t_guanggao set status ='2' where gid = #{ggid}")

@@ -26,6 +26,6 @@ public interface JianLiDao {
     @Update("update t_jianli  set xiangmulujing =#{xiangmulujing},zuopinshuoming=#{zuopinshuoming} where userid=#{jid}")
     void addJianLi6(@Param("jianLi")JianLi jianLi);
 
-    @Insert("insert into t_jianli (jid) values (#{jianLi.userid})")
-    void addJianLiInfo(@Param("jianLi") JianLi jianLi);
+    @Insert("insert into t_userjianli (userid) values (#{loginId})")
+    void addJianLiInfo(@Param("loginId") Integer loginId);
 }
