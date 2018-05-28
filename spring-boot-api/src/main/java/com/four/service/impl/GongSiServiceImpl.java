@@ -35,7 +35,7 @@ public class GongSiServiceImpl implements GongsiService {
         private GongSiDao gongsidao;
 
 
-        public List<GongSi> selectgongsi(){
+        public  List<GongSi> selectgongsi(){
 
                 return  gongsidao.selectgongsi();
         }
@@ -78,9 +78,27 @@ public class GongSiServiceImpl implements GongsiService {
                 return gongsidao.queryall(id);
         }
 
+
+
         @Override
         public void updatatongguo(Integer id) {
                 gongsidao.updatatongguo(id);
+        }
+
+        @Override
+        public void editgongshiname(GongSi gongSi) {
+                gongsidao.editgongshiname(gongSi);
+        }
+
+        @Override
+        public void gongsieditphoto(Integer comid, String photo) {
+                gongsidao.gongsieditphoto(comid,photo);
+        }
+
+        @Override
+        public List<GongSi> querysshowbyidzhiwei() {
+
+                return gongsidao.querysshowbyidzhiwei();
         }
 
 }
