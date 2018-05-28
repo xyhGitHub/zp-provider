@@ -108,5 +108,5 @@ public interface ILoginDao {
 	void updateLoginById(@Param("loginId") Integer loginId);
 
 	@Update("update t_login_user set comid = #{loginId} where loginId = #{loginId}")
-	void updateLoginGsById(Integer loginId);
+	void updateLoginGsById(@Param("loginId")Integer loginId);
 }

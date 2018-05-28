@@ -14,25 +14,17 @@ import com.four.dao.GongSiDao;
 import com.four.dao.JianLiDao;
 import com.four.model.*;
 import com.four.util.MD5;
+import com.four.util.SendEmail;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.four.dao.ILoginDao;
 import com.four.service.ILoginService;
-import redis.clients.jedis.Jedis;
 
-
-/**
- * <pre>项目名称：four_group    
- * 类名称：LoginServiceImpl    
- * 类描述：    
- * 创建人：孙梦娜  
- * 创建时间：2018年3月13日 下午1:13:08    
- * 修改人：孙梦娜    
- * 修改时间：2018年3月13日 下午1:13:08    
- * 修改备注：       
- * @version </pre>    
- */
+@Component
 @Service("loginService")
 public class LoginServiceImpl implements ILoginService {
 
@@ -45,6 +37,8 @@ public class LoginServiceImpl implements ILoginService {
 	@Autowired
 	private GongSiDao gongSiDao;
 
+	@Autowired
+	private AmqpTemplate rabbitTemplate;
 
 	//前台用户和公司注册
 	@Override
@@ -53,10 +47,15 @@ public class LoginServiceImpl implements ILoginService {
 		//默认0失败   1是成功
 		Integer regFlag = 0;
 
-		if(laGouUser != null){
 
-			String loginPwd = laGouUser.getLoginPwd();
+		if(laGouUser != null){
+			//存入队列中
+			String telPhone = laGouUser.getLoginName();
+			this.rabbitTemplate.convertAndSend("regMessage", telPhone);
+			System.out.println("生产者发布消息 : " + telPhone);
+
 			//对密码进行加密
+			String loginPwd = laGouUser.getLoginPwd();
 			laGouUser.setLoginPwd(MD5.md5(loginPwd));
 
 			Date dateNow = new Date();
@@ -86,8 +85,6 @@ public class LoginServiceImpl implements ILoginService {
 		//并在简历表t_userjianli新增userid
 		jianLiDao.addJianLiInfo(loginId);
 	}
-
-
 	//查询id对公司表进行新增
 	@Override
 	public void queryComIdByName(String loginName) {
