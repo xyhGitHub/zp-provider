@@ -44,6 +44,8 @@
     <dubbo:service interface="com.four.service.TreesService" ref="treesService" retries="0" timeout="60000"/>
     <dubbo:service interface="com.four.service.UsersService" ref="usersService" retries="0" timeout="60000"/>
     <dubbo:service interface="com.four.service.ZhiweiService" ref="zhiweiService" retries="0" timeout="60000"/>
+    <dubbo:service interface="com.four.service.LogService" ref="logService" timeout="60000"/>
+
 
 
 </beans>
