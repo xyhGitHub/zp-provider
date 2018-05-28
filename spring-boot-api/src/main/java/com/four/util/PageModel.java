@@ -1,34 +1,36 @@
 package com.four.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PageModel<T> {
-	
-	
+public class PageModel<T> implements Serializable{
+
+
+	private static final long serialVersionUID = 4554860607833450755L;
 	//总条数
 	private   int   pageSum;
-	
+
 	//每页条数
 	private   int     pageSize=6;
-	
+
 	//总页数
 	private    int   pageCount;
-	
-	 
+
+
 	//当前页
 	private    int   pageNow;
-	
-    //数据内容
+
+	//数据内容
 	private   List<T>  pageList=new ArrayList<T>();
 	//第几条开始
 	private    int   start;
-	
+
 	private    int   endindex;
-	  
+
 
 	public int getEndindex() {
-		
+
 		return (pageNow-1)*pageSize+pageSize;
 	}
 
@@ -37,7 +39,7 @@ public class PageModel<T> {
 	}
 
 	public int getStart() {
-	 
+
 		return (pageNow-1)*pageSize;
 	}
 
@@ -46,7 +48,7 @@ public class PageModel<T> {
 	}
 
 	public int getPageSum() {
-		
+
 		return pageSum;
 	}
 
@@ -63,14 +65,14 @@ public class PageModel<T> {
 	}
 
 	public int getPageCount() {
-		 if(pageSum%pageSize==0)
-	        {
-			 pageCount=pageSum/pageSize;
-	        	
-	        }else
-	        { 
-	        	pageCount=pageSum/pageSize+1; 
-	        }
+		if(pageSum%pageSize==0)
+		{
+			pageCount=pageSum/pageSize;
+
+		}else
+		{
+			pageCount=pageSum/pageSize+1;
+		}
 		return pageCount;
 	}
 
@@ -92,10 +94,10 @@ public class PageModel<T> {
 
 	public void setPageList(List<T> pageList) {
 		this.pageList = pageList;
-	} 
-	
-	
-	
-	
+	}
+
+
+
+
 
 }
