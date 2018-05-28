@@ -16,9 +16,7 @@ public class sendRegMessage {
 
     @RabbitHandler
     public void process(String telPhone) throws GeneralSecurityException {
-        Date da = new Date();
-        long time = da.getTime();
-        System.out.println("消费者接收到  : " + telPhone + "消息"+time);
+        System.out.println("消费者接收到  : " + telPhone + "消息");
         String str = telPhone + "@163.com";
         SendEmail.zhuCheChengGong(str, telPhone);
     }

@@ -3,7 +3,7 @@
  * 文件名称:Eml.java 
  * 包名:com.eml 
  * 创建日期:2018年3月16日下午7:41:36 
- * Copyright (c) 2018, 839174810@qq.com All Rights Reserved.</pre> 
+ * Copyright (c) 2018, 1103304339@qq.com All Rights Reserved.</pre> 
  */  
 package com.four.util;
 
@@ -25,7 +25,7 @@ public class SendEmail {
     String to = youxiang;
 
     // 发件人电子邮箱
-    String from = "839174810@qq.com";
+    String from = "1103304339@qq.com";
 
     // 指定发送邮件的主机为 smtp.qq.com
     String host = "smtp.qq.com";  //QQ 邮件服务器
@@ -45,7 +45,7 @@ public class SendEmail {
     Session session = Session.getDefaultInstance(properties,new Authenticator(){
         public PasswordAuthentication getPasswordAuthentication()
         {
-            return new PasswordAuthentication("839174810@qq.com", "wztxnpnqbdkmgdce"); //发件人邮件用户名、密码
+            return new PasswordAuthentication("1103304339@qq.com", "wztxnpnqbdkmgdce"); //发件人邮件用户名、密码
         }
     });
 
@@ -82,7 +82,7 @@ public class SendEmail {
     String to = youxiang;
 
     // 发件人电子邮箱
-    String from = "839174810@qq.com";
+    String from = "1103304339@qq.com";
 
     // 指定发送邮件的主机为 smtp.qq.com
     String host = "smtp.qq.com";  //QQ 邮件服务器
@@ -102,7 +102,7 @@ public class SendEmail {
     Session session = Session.getDefaultInstance(properties,new Authenticator(){
         public PasswordAuthentication getPasswordAuthentication()
         {
-            return new PasswordAuthentication("839174810@qq.com", "wztxnpnqbdkmgdce"); //发件人邮件用户名、密码
+            return new PasswordAuthentication("1103304339@qq.com", "wztxnpnqbdkmgdce"); //发件人邮件用户名、密码
         }
     });
 
