@@ -11,10 +11,10 @@ public class TongJi implements Serializable {
 
     private static final long serialVersionUID = 6772603962573605099L;
 
-    @Transient
+//    @Transient
     private Integer nums;
 
-    @Transient
+//    @Transient
     private String names;
 
     public Integer getNums() {
