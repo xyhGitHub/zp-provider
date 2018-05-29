@@ -66,6 +66,7 @@ public class User implements Serializable{
 	//联系电话
 	private String userphone;
 
+	private String  zhiweiname;
 	//用户密码
 	private String pwd;
 
@@ -102,6 +103,14 @@ public class User implements Serializable{
 	
 	//登录名称条件查询
 	private Integer loginnamecriteria;
+
+	public String getZhiweiname() {
+		return zhiweiname;
+	}
+
+	public void setZhiweiname(String zhiweiname) {
+		this.zhiweiname = zhiweiname;
+	}
 
 	public Integer getUserTtpe() {
 		return userTtpe;
@@ -481,6 +490,7 @@ public class User implements Serializable{
 				", companyid=" + companyid +
 				", companyname='" + companyname + '\'' +
 				", userphone='" + userphone + '\'' +
+				", zhiweiname='" + zhiweiname + '\'' +
 				", pwd='" + pwd + '\'' +
 				", listTree=" + listTree +
 				", checkcode='" + checkcode + '\'' +
