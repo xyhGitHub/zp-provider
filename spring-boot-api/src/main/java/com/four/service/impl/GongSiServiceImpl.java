@@ -34,7 +34,6 @@ public class GongSiServiceImpl implements GongsiService {
         @Autowired
         private GongSiDao gongsidao;
 
-
         public  List<GongSi> selectgongsi(){
 
                 return  gongsidao.selectgongsi();
@@ -49,7 +48,6 @@ public class GongSiServiceImpl implements GongsiService {
          */
         @Override
         public List<GongSi> querygongsi(GongSi gongsi, Integer offset,Integer pageSize) {
-
 
                 return gongsidao.querygongsi(gongsi,offset,pageSize);
         }

@@ -2,6 +2,7 @@ package com.four.service;
 
 import com.four.model.GongSi;
 import com.four.model.GongSiBoos;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
