@@ -35,7 +35,6 @@
     <dubbo:service interface="com.four.service.ILoginService" ref="loginService" retries="0" timeout="60000"/>
     <dubbo:service interface="com.four.service.IServiceTree" ref="treeService" retries="0" timeout="60000"/>
     <dubbo:service interface="com.four.service.RoleService" ref="roleService" retries="0" timeout="60000" />
-    <dubbo:service interface="com.four.service.CompanyService" ref="companyService" retries="0" timeout="60000"/>
     <dubbo:service interface="com.four.service.INoticeService" ref="noticeService" retries="0" timeout="60000"/>
     <dubbo:service interface="com.four.service.JianLiService" ref="jianLiService" retries="0" timeout="60000"/>
     <dubbo:service interface="com.four.service.BosssService" ref="bosssService" retries="0" timeout="60000"/>
