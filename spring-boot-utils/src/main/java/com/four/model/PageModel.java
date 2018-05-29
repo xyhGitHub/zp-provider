@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PageModel<ZhiweiLittle> implements Serializable {
+public class PageModel<Zhiwei> implements Serializable {
 
 
 	private static final long serialVersionUID = 4554860607833450755L;
@@ -22,7 +22,7 @@ public class PageModel<ZhiweiLittle> implements Serializable {
 	private    int   pageNow;
 	
     //数据内容
-	private List<ZhiweiLittle> pageList=new ArrayList<ZhiweiLittle>();
+	private List<Zhiwei> pageList=new ArrayList<Zhiwei>();
 	//第几条开始
 	private    int   start;
 	
@@ -88,11 +88,11 @@ public class PageModel<ZhiweiLittle> implements Serializable {
 		this.pageNow = pageNow;
 	}
 
-	public List<ZhiweiLittle> getPageList() {
+	public List<Zhiwei> getPageList() {
 		return pageList;
 	}
 
-	public void setPageList(List<ZhiweiLittle> pageList) {
+	public void setPageList(List<Zhiwei> pageList) {
 		this.pageList = pageList;
 	}
 }
