@@ -16,6 +16,9 @@ import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * <pre>项目名称：recruit-production
  * 类名称：WebLogAspect
@@ -98,7 +101,7 @@ public class WebLogAspect {
         logs.setParams(param);
         logs.setException("正常");
         //暂时logs的用户写成"测试人员",后面再改
-        mongoTemplate.save(logs);
+//        mongoTemplate.save(logs);
     }
     //异常通知：在目标方法出现异常 时会执行的代码，可以访问到异常对象：且可以!!指定在出现特定异常时在执行通知!!,如果是修改为nullPointerException里，只有空指针异常才会执行
     //    @AfterThrowing(pointcut = "execution(* Spring4_AOP.aopAnnotation.*.*(..))", throwing = "except")
@@ -131,8 +134,24 @@ public class WebLogAspect {
         logs.setMethodName(joinPoint.getSignature().getName());
         logs.setParams(param);
         logs.setException(exception);
-        //暂时logs的用户写成"测试人员",后面再改
-        mongoTemplate.save(logs);
+
+        //创建一个可缓存的线程池
+        ExecutorService cacheTreadPool = Executors.newCachedThreadPool();
+        for(int i = 0;i<10;i++){
+            try {
+                //sleep可明显看到使用的是线程池里面以前的线程，没有创建新的线程
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            cacheTreadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    mongoTemplate.save(logs);
+                }
+            });
+        }
+
     }
 
 
