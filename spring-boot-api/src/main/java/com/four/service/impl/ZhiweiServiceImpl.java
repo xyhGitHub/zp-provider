@@ -11,6 +11,7 @@
 package com.four.service.impl;
 
 import com.four.dao.ZhiweiDao;
+import com.four.model.User;
 import com.four.model.Zhiwei;
 import com.four.model.ZhiweiGreat;
 import com.four.model.ZhiweiLittle;
@@ -70,5 +71,12 @@ public class ZhiweiServiceImpl implements ZhiweiService{
 
 
         return zhiweiDao.queryzhiweishowlist();
+    }
+
+    @Override
+    public List<User> quaryTouDilist(Integer comid) {
+
+
+        return zhiweiDao.quaryTouDilist(comid);
     }
 }
