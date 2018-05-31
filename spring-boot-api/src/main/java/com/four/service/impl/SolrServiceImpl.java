@@ -51,66 +51,41 @@ public class SolrServiceImpl implements SolrService {
 
 		//获取query 对象
 		SolrQuery query = new SolrQuery();
-		
+		StringBuffer str = new StringBuffer();
 		//设置查询关键字  职位名称
+		String zhiweinames = productAndCate.getZhiweiname();
 		if (!StringUtils.isEmpty(productAndCate.getZhiweiname())) {
-			query.set("q", "zhiweiname:" + productAndCate.getZhiweiname());
+			str.append("zhiweiname:" + zhiweinames);
+//			str.append("xingzhi:" + zhiweinames+" OR ");
+//			str.append("xinzi:" + zhiweinames+" OR ");
+//			str.append("city:" + zhiweinames+" OR ");
+//			str.append("jingyan:" + zhiweinames+" OR ");
+//			str.append("xueli:" + zhiweinames+" OR ");
+//			str.append("xingzhi:" + zhiweinames+" OR ");
+//			str.append("youhuo:" + zhiweinames+" OR ");
+//			str.append("comname:" + zhiweinames+" OR ");
+			query.set("q",str.toString());
 		} else {
 			query.set("q", "*:*");
 			
 		}
-//		//设置查询关键字  职位性质
-//		if (!StringUtils.isEmpty(productAndCate.getXingzhi())) {
-//			query.set("q", "xingzhi:" + productAndCate.getXingzhi());
-//		} else {
-//			query.set("q", "*:*");
-//
-//		}
-//		//设置查询关键字  职位薪资
-//		if (!StringUtils.isEmpty(productAndCate.getXinzi())) {
-//			query.set("q", "xinzi:" + productAndCate.getXinzi());
-//		} else {
-//			query.set("q", "*:*");
-//
-//		}
-//		//设置查询关键字  城市
-//		if (!StringUtils.isEmpty(productAndCate.getCity())) {
-//			query.set("q", "city:" + productAndCate.getCity());
-//		} else {
-//			query.set("q", "*:*");
-//
-//		}
-//		//设置查询关键字  职位经验
-//		if (!StringUtils.isEmpty(productAndCate.getJingyan())) {
-//			query.set("q", "jingyan:" + productAndCate.getJingyan());
-//		} else {
-//			query.set("q", "*:*");
-//
-//		}
-//		//设置查询关键字  职位学历
-//		if (!StringUtils.isEmpty(productAndCate.getXueli())) {
-//			query.set("q", "xueli:" + productAndCate.getXueli());
-//		} else {
-//			query.set("q", "*:*");
-//
-//		}
-//		//设置查询关键字  职位诱惑
-//		if (!StringUtils.isEmpty(productAndCate.getYouhuo())) {
-//			query.set("q", "youhuo:" + productAndCate.getYouhuo());
-//		} else {
-//			query.set("q", "*:*");
-//
-//		}
-		//开始条数
-		query.setStart(0);
-//		query.setStart(pageModel.getStart());
+		//开始条数   开始页数
+//		query.setStart(0);
+		query.setStart(pageModel.getStart());
 		//每页几条
 		query.setRows(pageModel.getPageSize());
 		// 开启高亮
 		query.setHighlight(true);
 		//query.setParam("hl", "true"); //highlighting    
 		query.addHighlightField("zhiweiname");
-		
+//		query.addHighlightField("comname");
+//		query.addHighlightField("xinzi");
+//		query.addHighlightField("city");
+//		query.addHighlightField("xingzhi");
+//		query.addHighlightField("jingyan");
+//		query.addHighlightField("xueli");
+//		query.addHighlightField("youhuo");
+
 		query.setHighlightSimplePre("<font color='red'>"); // 高亮单词的前缀
 		
 		query.setHighlightSimplePost("</font>"); // 高亮单词的后缀
@@ -139,10 +114,12 @@ public class SolrServiceImpl implements SolrService {
 			
 			zhiweiLittle1.setId(Integer.valueOf(solrDocument.get("id").toString()));
 			 
-			 if (highlighting.get(solrDocument.get("id")) != null && highlighting.get(solrDocument.get("id")).get("zhiweiname") != null) {
+			 if (highlighting.get(solrDocument.get("id")) != null
+					 && highlighting.get(solrDocument.get("id")).get("zhiweiname") != null
+					 ) {
 	             //设置高亮
                String name = highlighting.get(solrDocument.get("id")).get("zhiweiname").get(0);
-               
+
                zhiweiLittle1.setZhiweiname(name);
 			 }else {
 				  zhiweiLittle1.setZhiweiname(solrDocument.get("zhiweiname").toString());
@@ -150,14 +127,15 @@ public class SolrServiceImpl implements SolrService {
 		   
            zhiweiLittle1.setComid(Integer.parseInt(solrDocument.get("comid").toString()));
            zhiweiLittle1.setZhiweigreatid(Integer.parseInt(solrDocument.get("zhiweigreatid").toString()));
-           zhiweiLittle1.setXinzi(solrDocument.get("xinzi").toString());
-           zhiweiLittle1.setXingzhi(solrDocument.get("xingzhi").toString());
-           zhiweiLittle1.setCity(solrDocument.get("city").toString());
-           zhiweiLittle1.setJingyan(solrDocument.get("jingyan").toString());
-           zhiweiLittle1.setXueli(solrDocument.get("xueli").toString());
-           zhiweiLittle1.setYouhuo(solrDocument.get("youhuo").toString());
+			zhiweiLittle1.setComname(solrDocument.get("comname").toString());
+			zhiweiLittle1.setXinzi(solrDocument.get("xinzi").toString());
+			zhiweiLittle1.setXingzhi(solrDocument.get("xingzhi").toString());
+			zhiweiLittle1.setCity(solrDocument.get("city").toString());
+			zhiweiLittle1.setJingyan(solrDocument.get("jingyan").toString());
+			zhiweiLittle1.setXueli(solrDocument.get("xueli").toString());
+			zhiweiLittle1.setYouhuo(solrDocument.get("youhuo").toString());
            products.add(zhiweiLittle1);
-		} 
+		}
 		pageModel.setPageList(products);
 		return pageModel;
 	}
