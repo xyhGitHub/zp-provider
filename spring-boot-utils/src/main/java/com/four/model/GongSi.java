@@ -30,6 +30,7 @@ public class GongSi implements Serializable {
     private  Integer  comshenhe;
     private  String comaddress;
     private  String comguimo;
+    private  String comshenhename;
 
     public Integer getComid() {
         return comid;
@@ -87,6 +88,14 @@ public class GongSi implements Serializable {
         this.comguimo = comguimo;
     }
 
+    public String getComshenhename() {
+        return comshenhename;
+    }
+
+    public void setComshenhename(String comshenhename) {
+        this.comshenhename = comshenhename;
+    }
+
     @Override
     public String toString() {
         return "GongSi{" +
@@ -97,6 +106,7 @@ public class GongSi implements Serializable {
                 ", comshenhe=" + comshenhe +
                 ", comaddress='" + comaddress + '\'' +
                 ", comguimo='" + comguimo + '\'' +
+                ", comshenhename='" + comshenhename + '\'' +
                 '}';
     }
 }
