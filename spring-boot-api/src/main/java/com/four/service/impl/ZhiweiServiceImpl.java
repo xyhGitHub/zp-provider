@@ -111,4 +111,21 @@ public class ZhiweiServiceImpl implements ZhiweiService{
 
         return zhiweiDao.quaryTouDilist(comid);
     }
+
+    @Override
+    public List<Zhiwei> selectJianLIlist(Integer comid) {
+
+        return zhiweiDao.selectJianLIlist(comid);
+
+    }
+
+    @Override
+    public void deleteJianLIById(Integer zhiweiid, Integer xiaoid, Integer daid) {
+        zhiweiDao.deleteJianLIById(zhiweiid,xiaoid,daid);
+    }
+
+    @Override
+    public Zhiwei updatajianlihuixian(Integer zhiweiid, Integer xiaoid, Integer daid) {
+        return zhiweiDao.updatajianlihuixian(zhiweiid,xiaoid,daid);
+    }
 }

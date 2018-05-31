@@ -25,4 +25,17 @@ public interface ZhiweiService {
     //人力查看
     List<User>  quaryTouDilist(Integer comid);
 
+    List<Zhiwei> selectJianLIlist(Integer comid);
+
+    void deleteJianLIById(Integer zhiweiid,Integer xiaoid,Integer daid);
+
+    /**
+     * 简历回显
+     * @param zhiweiid
+     * @param xiaoid
+     * @param daid
+     * @return
+     */
+    Zhiwei updatajianlihuixian(Integer zhiweiid, Integer xiaoid, Integer daid);
+
 }
