@@ -11,10 +11,7 @@
 package com.four.service.impl;
 
 import com.four.dao.ZhiweiDao;
-import com.four.model.User;
-import com.four.model.Zhiwei;
-import com.four.model.ZhiweiGreat;
-import com.four.model.ZhiweiLittle;
+import com.four.model.*;
 import com.four.service.ZhiweiService;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -74,6 +71,8 @@ public class ZhiweiServiceImpl implements ZhiweiService{
     @Override
     public void savezhiwei(Zhiwei zhiwei) {
         zhiweiDao.savezhiwei(zhiwei);
+        Integer comids = zhiwei.getComid();
+        GongSi comName = zhiweiDao.getComName(comids);
 
         SolrInputDocument doc =new SolrInputDocument();
 
@@ -81,6 +80,8 @@ public class ZhiweiServiceImpl implements ZhiweiService{
         doc.addField("comid", zhiwei.getComid());
         doc.addField("zhiweigreatid", zhiwei.getZhiweigreatid());
         doc.addField("zhiweiname",zhiwei.getZhiweiname());
+        //由职位中的公司id查询出来的公司名字
+        doc.addField("comname",comName.getComname());
         doc.addField("xinzi",zhiwei.getXinzi());
         doc.addField("xingzhi",zhiwei.getXingzhi());
         doc.addField("city",zhiwei.getCity());
