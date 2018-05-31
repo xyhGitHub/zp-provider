@@ -1,7 +1,7 @@
 package com.four.service;
 
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.dubbo.common.json.JSONObject;
 import com.four.model.GuangGao;
 
 import java.util.List;
