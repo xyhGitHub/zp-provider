@@ -1,13 +1,7 @@
 package com.four.dao;
 
-import com.four.model.User;
-import com.four.model.Zhiwei;
-import com.four.model.ZhiweiGreat;
-import com.four.model.ZhiweiLittle;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.four.model.*;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -40,12 +34,14 @@ public interface ZhiweiDao {
 
 
     @Select("select * from (select uj.userid,t2.zhiweiname from (select u.userid,t1.zhiweiname from t_userjianli u ,(SELECT g.userid,z.zhiweiname from t_zhiwei z,t_gsjl g where z.comid=1 and z.id=g.comid) t1 where u.jianliid = t1.userid ) t2, t_userjianli uj where t2.userid= uj.userid) t3, t_user u3  where t3.userid=u3.userid")
-    List<User> quaryTouDilist(Integer comid);
+    List<User> quaryTouDilist(@Param("comid") Integer comid);
+
+    @Select("select t1.* ,t2.comname  ,t4.name ,t4.id xiaoid,t3.id daid  from t_zhiwei t1,t_company t2 ,t_zhiweigreat t3 ,t_zhiweilittle t4 where t1.comid= t2.comid and t1.zhiweigreatid=t3.id and t3.id =t4.greatid  and  t2.comid =#{comid}")
+    List<Zhiwei> selectJianLIlist(@Param("comid")Integer comid);
+
+    @Delete("DELETE  t3 FROM t_zhiwei t1,t_zhiweigreat t2,t_zhiweilittle t3   WHERE   t1.id=#{zhiweiid} and t2.id=#{daid} and t3.id=#{daid}")
+    void deleteJianLIById(@Param("zhiweiid")Integer zhiweiid,@Param("xiaoid") Integer xiaoid,@Param("daid") Integer daid);
+
+    @Select("SELECT  t1.*,t2.name daname ,t3.name  xiaoname FROM t_zhiwei t1,t_zhiweigreat t2,t_zhiweilittle t3   WHERE   t1.id=#{zhiweiid} and t2.id=#{daid} and t3.id=#{xiaoid}    ")
+    Zhiwei updatajianlihuixian(@Param("zhiweiid") Integer zhiweiid,@Param("xiaoid") Integer xiaoid, @Param("daid") Integer daid);
 }
-   /* @Insert("insert into t_guanggao values(#{guanggao.gid},#{guanggao.imageurl},#{guanggao.pid},#{guanggao.info},#{guanggao.companyid},#{guanggao.status})")
-    void saveguanggao(@Param("guanggao") Guanggao guanggao);
-    @Update("update  t_guanggao set status ='2' where gid = #{ggid}")
-    void updatestatus(@Param("ggid") String ggid);
-    @Delete("delete from t_guanggao where gid = #{gid}")
-    void deleteguanggao(@Param("gid") String gid);
-*/
