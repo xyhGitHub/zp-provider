@@ -12,8 +12,8 @@ import java.util.List;
 @Mapper
 public interface GongSiDao {
 
-    @Select("select * from  t_company")
-    List<GongSi> selectgongsi();
+    @Select("select * from  t_company  where comid= #{comid}")
+    GongSi selectgongsi(Integer comid);
 
     @Select(" select * from t_company  limit 0,3")
     List<GongSi> querygongsi(@Param("gongsi") GongSi gongsi, @Param("offset") Integer offset, @Param("pageSize") Integer pageSize);
@@ -43,6 +43,12 @@ public interface GongSiDao {
 
     @Insert("insert into t_company (comid) values (#{loginId})")
     void addGongSiId(@Param("loginId") Integer loginId);
+
+    @Insert("insert into t_biaoqian values (#{gongSi.combiaoqian})")
+    void savebiaoqian(GongSi gongSi);
+
+    @Select("select t1.*,t2.comname from com_boss t1, t_company t2 where t1.comid=#{comid}   ")
+    GongSiBoos selectBossById(Integer comid);
 
    /* @Insert("insert into t_guanggao values(#{guanggao.gid},#{guanggao.imageurl},#{guanggao.pid},#{guanggao.info},#{guanggao.companyid},#{guanggao.status})")
     void saveguanggao(@Param("guanggao") Guanggao guanggao);
