@@ -122,10 +122,21 @@ public class ZhiweiServiceImpl implements ZhiweiService{
     @Override
     public void deleteJianLIById(Integer zhiweiid, Integer xiaoid, Integer daid) {
         zhiweiDao.deleteJianLIById(zhiweiid,xiaoid,daid);
+
+        //删除solr索引
+        try {
+            httpSolrServer.deleteById(zhiweiid.toString());
+            httpSolrServer.commit();
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Zhiwei updatajianlihuixian(Integer zhiweiid, Integer xiaoid, Integer daid) {
         return zhiweiDao.updatajianlihuixian(zhiweiid,xiaoid,daid);
+
     }
 }
