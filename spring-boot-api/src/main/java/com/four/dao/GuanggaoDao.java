@@ -1,6 +1,5 @@
 package com.four.dao;
 
-import com.four.model.Company;
 import com.four.model.GuangGao;
 import org.apache.ibatis.annotations.*;
 

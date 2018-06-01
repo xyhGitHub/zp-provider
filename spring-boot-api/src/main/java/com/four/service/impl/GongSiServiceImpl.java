@@ -34,9 +34,9 @@ public class GongSiServiceImpl implements GongsiService {
         @Autowired
         private GongSiDao gongsidao;
 
-        public  List<GongSi> selectgongsi(){
+        public  GongSi selectgongsi(Integer comid){
 
-                return  gongsidao.selectgongsi();
+                return  gongsidao.selectgongsi(comid);
         }
 
         /**
@@ -97,6 +97,12 @@ public class GongSiServiceImpl implements GongsiService {
         public List<GongSi> querysshowbyidzhiwei() {
 
                 return gongsidao.querysshowbyidzhiwei();
+        }
+
+        //根据公司的comid查询boss信息
+        @Override
+        public GongSiBoos selectBossById(Integer comid) {
+                return gongsidao.selectBossById(comid);
         }
 
 }

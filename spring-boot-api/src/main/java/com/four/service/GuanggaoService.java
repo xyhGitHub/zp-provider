@@ -1,7 +1,6 @@
 package com.four.service;
 
 
-import com.alibaba.dubbo.common.json.JSONObject;
 import com.four.model.GuangGao;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public interface GuanggaoService {
 
 	void saveGuangGaoByModel(GuangGao guangGao);
 
-	JSONObject queryGuangGao(Integer offset, Integer limit);
+	net.sf.json.JSONObject queryGuangGao(Integer offset, Integer limit);
 
 	List<GuangGao> queryGuangGaoQianTai();
 
